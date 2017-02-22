@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<litepal>
+    <dbname value="address_knot"/>
+    <version value="1"/>
+    <list>
+        <mapping class="com.leoliao.everydayweather.beans.loc.Province"/>
+        <mapping class="com.leoliao.everydayweather.beans.loc.City"/>
+        <mapping class="com.leoliao.everydayweather.beans.loc.Country"/>
+    </list>
+</litepal>
