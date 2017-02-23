@@ -12,4 +12,19 @@ import org.litepal.LitePalApplication;
  * 更新描述   ${TODO}
  */
 public class BaseApplication extends LitePalApplication {
+    private static android.os.Handler handler;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        handler=new android.os.Handler();
+    }
+
+    public static void postRunnable(Runnable runnable){
+        handler.post(runnable);
+    }
+
+    public static void postDelay(Runnable runnable,long millis){
+        handler.postDelayed(runnable,millis);
+    }
 }

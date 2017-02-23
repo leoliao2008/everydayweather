@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
+import com.leoliao.everydayweather.R;
+
 /**
  * 创建者     $Author$
  * 创建时间   2017/2/22 23:12
@@ -21,6 +23,18 @@ public abstract class BaseActivity extends AppCompatActivity {
         initViews();
         initData();
         initListeners();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        overridePendingTransition(R.anim.animate_windows_enter,R.anim.animate_windows_exit);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        overridePendingTransition(R.anim.animate_windows_enter,R.anim.animate_windows_exit);
     }
 
     protected abstract void initListeners();
