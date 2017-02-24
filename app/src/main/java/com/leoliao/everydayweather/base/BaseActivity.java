@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import com.leoliao.everydayweather.R;
+import com.leoliao.everydayweather.utils.LogUtil;
 
 /**
  * 创建者     $Author$
@@ -44,6 +45,10 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected abstract void initViews();
 
     protected abstract int setLayoutId();
+
+    protected void showLog(String msg){
+        LogUtil.showLog(getClass().getName(),msg);
+    }
 
 
 }

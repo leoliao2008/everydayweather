@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_id_03"
+        android:title="XXX"
+        android:icon="@android:drawable/ic_menu_agenda"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/menu_id_04"
+        android:title="XXX"
+        android:icon="@android:drawable/ic_menu_agenda"
+        app:showAsAction="never"/>
+
+</menu>

@@ -1,5 +1,7 @@
 package com.leoliao.everydayweather.beans.loc;
 
+import com.google.gson.annotations.SerializedName;
+
 import org.litepal.crud.DataSupport;
 
 /**
@@ -13,7 +15,9 @@ import org.litepal.crud.DataSupport;
  */
 public class Province extends DataSupport {
     private int id;
+    @SerializedName("name")
     private String provinceName;
+    @SerializedName("id")
     private String provinceCode;
 
     public int getId() {
