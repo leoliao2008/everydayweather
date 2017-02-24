@@ -19,25 +19,30 @@ import com.leoliao.everydayweather.utils.LogUtil;
  * 更新描述   ${TODO}
  */
 public abstract class BaseFragment extends Fragment {
+    private View rootView;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v=inflater.inflate(setLayoutId(),null);
-        initView(v);
+        rootView=inflater.inflate(setLayoutId(),null);
+        initView();
         initData();
         initListeners();
-        return v;
+        return rootView;
     }
 
     protected abstract void initListeners();
 
     protected abstract void initData();
 
-    protected abstract void initView(View rootView);
+    protected abstract void initView();
 
     protected abstract int setLayoutId();
 
     protected void showLog(String msg){
         LogUtil.showLog(getClass().getName(),msg);
+    }
+
+    protected View findViewById(int id){
+        return rootView.findViewById(id);
     }
 }

@@ -1,36 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
-
-    <FrameLayout
+    >
+    <RelativeLayout
+        android:id="@+id/container_1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="@dimen/tool_bar_height">
         <TextView
             android:id="@+id/fragment_domestic_region_tv_title"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/tool_bar_height"
+            android:layout_height="match_parent"
             android:gravity="center"
             android:textColor="@color/colorWhite"
-            android:background="@color/colorPrimary"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/tool_bar_height"
-            android:background="@null"
-            android:drawableBottom="@drawable/selector_btn_back"
+            android:background="@color/colorPrimary"
+            android:textSize="@dimen/text_size_tool_bar_title"
             />
-    </FrameLayout>
-
-
+        <ImageView
+            android:id="@+id/fragment_domestic_region_iv_back_press"
+            android:clickable="true"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/selector_btn_back"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/margin_1"
+            />
+    </RelativeLayout>
 
     <ListView
+        android:layout_below="@id/container_1"
         android:background="@color/colorWhite"
         android:id="@+id/fragment_domestic_region_lstv"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     </ListView>
-</LinearLayout>
+    <ProgressBar
+        android:id="@+id/fragment_domestic_region_prgsb_loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:interpolator="@android:interpolator/linear"
+        android:indeterminate="true"
+        android:indeterminateBehavior="cycle"
+    />
+</RelativeLayout>
 

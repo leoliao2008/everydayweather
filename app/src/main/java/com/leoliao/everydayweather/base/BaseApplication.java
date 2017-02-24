@@ -1,5 +1,7 @@
 package com.leoliao.everydayweather.base;
 
+import android.content.Context;
+
 import org.litepal.LitePalApplication;
 
 /**
@@ -13,11 +15,13 @@ import org.litepal.LitePalApplication;
  */
 public class BaseApplication extends LitePalApplication {
     private static android.os.Handler handler;
+    private static Context mContext;
 
     @Override
     public void onCreate() {
         super.onCreate();
         handler=new android.os.Handler();
+        mContext=getApplicationContext();
     }
 
     public static void postRunnable(Runnable runnable){
@@ -26,5 +30,9 @@ public class BaseApplication extends LitePalApplication {
 
     public static void postDelay(Runnable runnable,long millis){
         handler.postDelayed(runnable,millis);
+    }
+
+    public static Context getGlobalContext(){
+        return mContext;
     }
 }

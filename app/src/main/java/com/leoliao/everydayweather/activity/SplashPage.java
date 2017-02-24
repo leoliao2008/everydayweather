@@ -36,7 +36,7 @@ public class SplashPage extends BaseActivity {
                 finish();
                 overridePendingTransition(R.anim.animate_windows_enter,R.anim.animate_windows_exit);
             }
-        },2000);
+        },500);
     }
 
 }

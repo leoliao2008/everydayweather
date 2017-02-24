@@ -5,12 +5,16 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.leoliao.everydayweather.R;
+import com.leoliao.everydayweather.activity.MainActivity;
 import com.leoliao.everydayweather.base.BaseFragment;
 import com.leoliao.everydayweather.utils.NetUtils;
+import com.leoliao.everydayweather.utils.ToastUtil;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
 import org.json.JSONArray;
@@ -34,9 +38,26 @@ public class RegionListFragment extends BaseFragment {
     private ListView mListView;
     private ArrayList<String> mList=new ArrayList<>();
     private ArrayAdapter<String> mAdapter;
-    @Override
-    protected void initListeners() {
+    private ProgressBar loadingIcon;
+    private TextView tv_title;
+    private int currentLevel;
+    private static final int PROVINCE_LEVEL=0;
+    private static final int CITY_LEVEL=1;
+    private static final int COUNTRY_LEVEL=2;
+    private ImageView iv_backPress;
 
+
+    @Override
+    protected int setLayoutId() {
+        return R.layout.fragment_domestic_region;
+    }
+
+    @Override
+    protected void initView() {
+        mListView= (ListView) findViewById(R.id.fragment_domestic_region_lstv);
+        loadingIcon= (ProgressBar) findViewById(R.id.fragment_domestic_region_prgsb_loading);
+        tv_title= (TextView) findViewById(R.id.fragment_domestic_region_tv_title);
+        iv_backPress= (ImageView) findViewById(R.id.fragment_domestic_region_iv_back_press);
     }
 
     @Override
@@ -55,13 +76,38 @@ public class RegionListFragment extends BaseFragment {
 
     }
 
+    @Override
+    protected void initListeners() {
+        iv_backPress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (currentLevel){
+                    case PROVINCE_LEVEL:
+                        if(getActivity()instanceof MainActivity){
+                            ((MainActivity) getActivity()).closeDrawer();
+                        }
+                        break;
+                    case CITY_LEVEL:
+                        break;
+                    case COUNTRY_LEVEL:
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
+
+    }
+
+
+
     private void updateProvincesList(){
+        loadingIcon.setVisibility(View.VISIBLE);
         NetUtils.requestProvinces(new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 try {
                     JSONArray jsonArray=new JSONArray(new String(responseBody));
-
                     int len=jsonArray.length();
                     mList.clear();
                     for(int i=0;i<len;i++){
@@ -70,7 +116,7 @@ public class RegionListFragment extends BaseFragment {
                             mList.add(temp.getString("name"));
                         }
                     }
-                    mAdapter.notifyDataSetChanged();
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -79,18 +125,22 @@ public class RegionListFragment extends BaseFragment {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                mList.clear();
+                ToastUtil.showToast("加载省份失败，请检查网络是否连接。");
 
+            }
+
+            @Override
+            public void onFinish() {
+                mAdapter.notifyDataSetChanged();
+                loadingIcon.setVisibility(View.GONE);
+                tv_title.setText("中国");
+                currentLevel=PROVINCE_LEVEL;
+                super.onFinish();
             }
         });
     }
 
-    @Override
-    protected void initView(View rootView) {
-        mListView= (ListView) rootView.findViewById(R.id.fragment_domestic_region_lstv);
-    }
 
-    @Override
-    protected int setLayoutId() {
-        return R.layout.fragment_domestic_region;
-    }
+
 }

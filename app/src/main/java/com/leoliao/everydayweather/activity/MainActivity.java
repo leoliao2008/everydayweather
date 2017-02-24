@@ -33,10 +33,7 @@ public class MainActivity extends BaseActivity {
         setSupportActionBar(mToolbar);
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         if(actionBar!=null){
-            showLog("action bar is not null");
             actionBar.setDisplayHomeAsUpEnabled(true);
-        }else {
-            showLog("action bar is null");
         }
     }
 
@@ -56,6 +53,10 @@ public class MainActivity extends BaseActivity {
                 break;
         }
         return true;
+    }
+
+    public void closeDrawer(){
+        mDrawerLayout.closeDrawer(GravityCompat.START,true);
     }
 
     @Override
