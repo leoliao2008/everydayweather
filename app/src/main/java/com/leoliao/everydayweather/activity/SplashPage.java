@@ -32,7 +32,7 @@ public class SplashPage extends BaseActivity {
         BaseApplication.postDelay(new Runnable() {
             @Override
             public void run() {
-                FrontPage.startActivity(SplashPage.this);
+                MainActivity.startActivity(SplashPage.this);
                 finish();
                 overridePendingTransition(R.anim.animate_windows_enter,R.anim.animate_windows_exit);
             }

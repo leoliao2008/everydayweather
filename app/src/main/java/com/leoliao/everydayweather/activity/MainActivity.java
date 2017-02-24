@@ -15,7 +15,7 @@ import com.leoliao.everydayweather.base.BaseActivity;
  * 更新时间   $Date$
  * 更新描述   ${TODO}
  */
-public class FrontPage extends BaseActivity {
+public class MainActivity extends BaseActivity {
     @Override
     protected void initListeners() {
 
@@ -37,6 +37,6 @@ public class FrontPage extends BaseActivity {
     }
 
     public static void startActivity(Context context){
-        context.startActivity(new Intent(context,FrontPage.class));
+        context.startActivity(new Intent(context,MainActivity.class));
     }
 }
