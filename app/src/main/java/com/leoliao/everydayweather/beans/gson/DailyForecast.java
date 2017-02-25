@@ -12,7 +12,8 @@ import com.google.gson.annotations.SerializedName;
  * 更新描述   ${TODO}
  */
 public class DailyForecast {
-    String data;
+
+    String date;
     @SerializedName("hum")
     String humidity;
     /**
@@ -62,13 +63,133 @@ public class DailyForecast {
         String dayTimeDescription;
         @SerializedName("txt_n")
         String nightTimeDescription;
+
+        public int getDayTimeConditionCode() {
+            return dayTimeConditionCode;
+        }
+
+        public void setDayTimeConditionCode(int dayTimeConditionCode) {
+            this.dayTimeConditionCode = dayTimeConditionCode;
+        }
+
+        public int getNightTimeConditionCode() {
+            return nightTimeConditionCode;
+        }
+
+        public void setNightTimeConditionCode(int nightTimeConditionCode) {
+            this.nightTimeConditionCode = nightTimeConditionCode;
+        }
+
+        public String getDayTimeDescription() {
+            return dayTimeDescription;
+        }
+
+        public void setDayTimeDescription(String dayTimeDescription) {
+            this.dayTimeDescription = dayTimeDescription;
+        }
+
+        public String getNightTimeDescription() {
+            return nightTimeDescription;
+        }
+
+        public void setNightTimeDescription(String nightTimeDescription) {
+            this.nightTimeDescription = nightTimeDescription;
+        }
     }
 
     Temperature tmp;
     public class Temperature{
         String max;
         String min;
+
+        public String getMax() {
+            return max;
+        }
+
+        public void setMax(String max) {
+            this.max = max;
+        }
+
+        public String getMin() {
+            return min;
+        }
+
+        public void setMin(String min) {
+            this.min = min;
+        }
     }
 
     Wind wind;
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getHumidity() {
+        return humidity;
+    }
+
+    public void setHumidity(String humidity) {
+        this.humidity = humidity;
+    }
+
+    public String getPcpn() {
+        return pcpn;
+    }
+
+    public void setPcpn(String pcpn) {
+        this.pcpn = pcpn;
+    }
+
+    public String getPop() {
+        return pop;
+    }
+
+    public void setPop(String pop) {
+        this.pop = pop;
+    }
+
+    public String getPressure() {
+        return pressure;
+    }
+
+    public void setPressure(String pressure) {
+        this.pressure = pressure;
+    }
+
+    public AstroDigits getAstroDigits() {
+        return mAstroDigits;
+    }
+
+    public void setAstroDigits(AstroDigits astroDigits) {
+        mAstroDigits = astroDigits;
+    }
+
+    public WeatherCondition getWeatherCondition() {
+        return mWeatherCondition;
+    }
+
+    public void setWeatherCondition(WeatherCondition weatherCondition) {
+        mWeatherCondition = weatherCondition;
+    }
+
+    public Temperature getTmp() {
+        return tmp;
+    }
+
+    public void setTmp(Temperature tmp) {
+        this.tmp = tmp;
+    }
+
+    public Wind getWind() {
+        return wind;
+    }
+
+    public void setWind(Wind wind) {
+        this.wind = wind;
+    }
 }

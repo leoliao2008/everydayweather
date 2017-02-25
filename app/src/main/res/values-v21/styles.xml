@@ -9,7 +9,7 @@
     </style>
 
     <style name="MyTheme" parent="AppTheme">
-
+        <item name="android:statusBarColor">@color/colorTransparent</item>
     </style>
 
 

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/padding_medium"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    android:background="@color/colorBackGround"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorWhite"
+            android:background="@color/colorBlackShade"
+            android:textSize="@dimen/text_size_tool_bar_title"
+            android:padding="@dimen/padding_medium"
+            android:text="预报"
+        />
+        <com.leoliao.everydayweather.widget.StiffenListView
+            android:id="@+id/main_lsv_forecast"
+            android:background="@color/colorBlackShade"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <include layout="@layout/widget_air_condition"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorWhite"
+            android:background="@color/colorBlackShade"
+            android:textSize="@dimen/text_size_tool_bar_title"
+            android:padding="@dimen/padding_medium"
+            android:text="生活建议"
+        />
+        <com.leoliao.everydayweather.widget.StiffenListView
+            android:id="@+id/main_lsv_suggestions"
+            android:background="@color/colorBlackShade"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+
+    </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>

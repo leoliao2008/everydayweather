@@ -38,4 +38,27 @@ public class Basic {
         String utcTime;
     }
 
+    public String getCity() {
+        return city;
+    }
+
+    public String getCounty() {
+        return county;
+    }
+
+    public String getWeatherId() {
+        return weatherId;
+    }
+
+    public String getLat() {
+        return lat;
+    }
+
+    public String getLon() {
+        return lon;
+    }
+
+    public Update getUpdateTime() {
+        return updateTime;
+    }
 }

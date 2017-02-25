@@ -15,4 +15,12 @@ public class WeatherCondition {
     String code;
     @SerializedName("txt")
     String description;
+
+    public String getCode() {
+        return code;
+    }
+
+    public String getDescription() {
+        return description;
+    }
 }

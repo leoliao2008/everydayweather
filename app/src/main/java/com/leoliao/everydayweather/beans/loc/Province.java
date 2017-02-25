@@ -2,8 +2,6 @@ package com.leoliao.everydayweather.beans.loc;
 
 import com.google.gson.annotations.SerializedName;
 
-import org.litepal.crud.DataSupport;
-
 /**
  * 创建者     $Author$
  * 创建时间   2017/2/22 23:43
@@ -13,19 +11,15 @@ import org.litepal.crud.DataSupport;
  * 更新时间   $Date$
  * 更新描述   ${TODO}
  */
-public class Province extends DataSupport {
-    private int id;
+public class Province extends Region {
     @SerializedName("name")
     private String provinceName;
     @SerializedName("id")
     private String provinceCode;
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+    public Province(String provinceName, String provinceCode) {
+        this.provinceName = provinceName;
+        this.provinceCode = provinceCode;
     }
 
     public String getProvinceName() {

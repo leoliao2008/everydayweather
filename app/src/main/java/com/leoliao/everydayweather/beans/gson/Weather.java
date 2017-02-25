@@ -26,4 +26,31 @@ public class Weather {
     @SerializedName("suggestion")
     Suggestions mSuggestions;
 
+    public AQI getAqi() {
+        return aqi;
+    }
+
+    public Basic getBasic() {
+        return basic;
+    }
+
+    public List<DailyForecast> getDailyForecasts() {
+        return mDailyForecasts;
+    }
+
+    public List<HourlyForecast> getHourlyForecasts() {
+        return mHourlyForecasts;
+    }
+
+    public CurrentStatus getCurrentStatus() {
+        return mCurrentStatus;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public Suggestions getSuggestions() {
+        return mSuggestions;
+    }
 }

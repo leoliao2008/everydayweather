@@ -45,4 +45,36 @@ public class CurrentStatus {
     @SerializedName("vis")
     String visibility;
     Wind wind;
+
+    public WeatherCondition getCond() {
+        return cond;
+    }
+
+    public String getFl() {
+        return fl;
+    }
+
+    public String getHum() {
+        return hum;
+    }
+
+    public String getPcpn() {
+        return pcpn;
+    }
+
+    public String getPres() {
+        return pres;
+    }
+
+    public String getTmp() {
+        return tmp;
+    }
+
+    public String getVisibility() {
+        return visibility;
+    }
+
+    public Wind getWind() {
+        return wind;
+    }
 }
