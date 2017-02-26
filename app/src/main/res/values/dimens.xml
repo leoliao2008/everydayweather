@@ -7,7 +7,10 @@
     <dimen name="text_size_tool_bar_title">20sp</dimen>
     <dimen name="wall_paper_height">250dp</dimen>
     <dimen name="text_size_front_page_temperature">50sp</dimen>
-    <dimen name="padding_medium">20sp</dimen>
+    <dimen name="padding_medium">15sp</dimen>
     <dimen name="margin_medium">16sp</dimen>
     <dimen name="text_size_big">30sp</dimen>
+    <dimen name="padding_small">7dp</dimen>
+    <dimen name="corner_radius">5dp</dimen>
+    <dimen name="logo_margin_top">150dp</dimen>
 </resources>

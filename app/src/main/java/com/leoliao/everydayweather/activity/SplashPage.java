@@ -1,5 +1,7 @@
 package com.leoliao.everydayweather.activity;
 
+import android.view.View;
+
 import com.leoliao.everydayweather.R;
 import com.leoliao.everydayweather.base.BaseActivity;
 import com.leoliao.everydayweather.base.BaseApplication;
@@ -13,6 +15,7 @@ public class SplashPage extends BaseActivity {
 
     @Override
     protected void initData() {
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
 
     }
 
@@ -34,9 +37,8 @@ public class SplashPage extends BaseActivity {
             public void run() {
                 MainActivity.startActivity(SplashPage.this);
                 finish();
-                overridePendingTransition(R.anim.animate_windows_enter,R.anim.animate_windows_exit);
             }
-        },500);
+        },2000);
     }
 
 }

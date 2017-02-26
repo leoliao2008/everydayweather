@@ -1,51 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<android.support.v4.widget.SwipeRefreshLayout
+    android:id="@+id/main_swipe_refresh_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/padding_medium"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="@dimen/padding_small"
     android:background="@color/colorBackGround"
-    >
-    <LinearLayout
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/main_nested_scroll_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <TextView
+        android:layout_height="match_parent"
+        android:padding="@dimen/padding_small"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    >
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorWhite"
-            android:background="@color/colorBlackShade"
-            android:textSize="@dimen/text_size_tool_bar_title"
-            android:padding="@dimen/padding_medium"
-            android:text="预报"
-        />
-        <com.leoliao.everydayweather.widget.StiffenListView
-            android:id="@+id/main_lsv_forecast"
-            android:background="@color/colorBlackShade"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:orientation="vertical">
 
-        <include layout="@layout/widget_air_condition"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorWhite"
+                android:background="@drawable/shape_round_corner_back_ground_top"
+                android:textSize="@dimen/text_size_tool_bar_title"
+                android:padding="@dimen/padding_medium"
+                android:text="预报"
+            />
+            <com.leoliao.everydayweather.widget.StiffenListView
+                android:id="@+id/main_lsv_forecast"
+                android:background="@drawable/shape_round_corner_back_ground_bottom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_medium"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorWhite"
-            android:background="@color/colorBlackShade"
-            android:textSize="@dimen/text_size_tool_bar_title"
-            android:padding="@dimen/padding_medium"
-            android:text="生活建议"
-        />
-        <com.leoliao.everydayweather.widget.StiffenListView
-            android:id="@+id/main_lsv_suggestions"
-            android:background="@color/colorBlackShade"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            <include layout="@layout/widget_air_condition"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorWhite"
+                android:background="@drawable/shape_round_corner_back_ground_top"
+                android:textSize="@dimen/text_size_tool_bar_title"
+                android:padding="@dimen/padding_medium"
+                android:text="生活建议"
+            />
+            <com.leoliao.everydayweather.widget.StiffenListView
+                android:id="@+id/main_lsv_suggestions"
+                android:background="@drawable/shape_round_corner_back_ground_bottom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
 
-    </LinearLayout>
+        </LinearLayout>
 
-</android.support.v4.widget.NestedScrollView>
+    </android.support.v4.widget.NestedScrollView>
+
+
+
+
+
+
+</android.support.v4.widget.SwipeRefreshLayout>

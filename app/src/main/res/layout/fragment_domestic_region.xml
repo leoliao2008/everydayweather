@@ -14,7 +14,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:textColor="@color/colorWhite"
-            android:background="@color/colorPrimary"
+            android:background="@color/colorPrimaryDark"
             android:textSize="@dimen/text_size_tool_bar_title"
             />
         <ImageView

@@ -48,9 +48,8 @@
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/text_size_front_page_temperature"
                         android:textColor="@color/colorWhite"
-                        android:text="30℃"
+                        android:text="无数据"
                     />
-
                     <TextView
                         android:id="@+id/main_tv_current_weather_description"
                         android:layout_gravity="end"
@@ -58,7 +57,7 @@
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/text_size_tool_bar_title"
                         android:textColor="@color/colorWhite"
-                        android:text="多云"
+                        android:text="无数据"
                     />
 
                 </LinearLayout>
@@ -79,15 +78,21 @@
         <include
             layout="@layout/widget_scroll_view_weather_detail"
         />
-        <ProgressBar
+
+        <com.leoliao.everydayweather.widget.ScreenBlocker
+            android:id="@+id/main_loading_view"
             android:visibility="gone"
-            android:id="@+id/main_pgrb_laoding"
-            android:layout_gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:indeterminate="true"
-            android:indeterminateBehavior="cycle"
-        />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ProgressBar
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:indeterminateBehavior="cycle"
+            />
+        </com.leoliao.everydayweather.widget.ScreenBlocker>
+
     </android.support.design.widget.CoordinatorLayout>
     <fragment
         android:name="com.leoliao.everydayweather.fragment.RegionListFragment"

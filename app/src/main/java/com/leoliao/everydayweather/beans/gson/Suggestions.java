@@ -1,5 +1,8 @@
 package com.leoliao.everydayweather.beans.gson;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 创建者     $Author$
  * 创建时间   2017/2/24 0:59
@@ -28,6 +31,19 @@ public class Suggestions {
     public SportEntity sport;
     public TravEntity trav;
     public UvEntity uv;
+
+    public List<String> getSuggestionList(){
+        ArrayList<String>list=new ArrayList<>();
+        list.clear();
+        list.add("舒适度指数："+comf.txt);
+        list.add("洗车指数："+cw.txt);
+        list.add("穿衣指数："+drsg.txt);
+        list.add("感冒指数："+flu.txt);
+        list.add("运动指数："+sport.txt);
+        list.add("旅行指数："+trav.txt);
+        list.add("紫外线指数："+uv.txt);
+        return list;
+    }
 
     public class ComfEntity {
         /**

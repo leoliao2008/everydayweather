@@ -20,5 +20,6 @@ public interface Constants {
     public static final String REQUEST_WEATHER_DATA="http://guolin.tech/api/weather?key=dd71df46a4014272ab52ac22d37ce0dc&cityid=";
 
     public static final String REQUEST_WALL_PAPER="http://guolin.tech/api/bing_pic";
+    public static final String BAIDU_LBS_KEY="5bpTc8K6n4BPRG6k3rXBZpnYg3iIznXi";
 
 }

@@ -23,6 +23,11 @@ public class AQI {
 //                    "so2": "15"
 //        }
     City city;
+
+    public City getCity() {
+        return city;
+    }
+
     public class City{
     String aqi;
     String co;
@@ -33,5 +38,36 @@ public class AQI {
     String qlty;
     String so2;
 
-}
+        public String getAqi() {
+            return aqi;
+        }
+
+        public String getCo() {
+            return co;
+        }
+
+        public String getNo2() {
+            return no2;
+        }
+
+        public String getO3() {
+            return o3;
+        }
+
+        public String getPm10() {
+            return pm10;
+        }
+
+        public String getPm25() {
+            return pm25;
+        }
+
+        public String getQlty() {
+            return qlty;
+        }
+
+        public String getSo2() {
+            return so2;
+        }
+    }
 }

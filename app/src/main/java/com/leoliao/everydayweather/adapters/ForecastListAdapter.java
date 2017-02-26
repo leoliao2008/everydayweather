@@ -31,12 +31,16 @@ public class ForecastListAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return list.size();
+        return list.size()+1;
     }
 
     @Override
     public Object getItem(int position) {
-        return list.get(position);
+        if(position>1){
+            return list.get(position-1);
+        }else {
+            return null;
+        }
     }
 
     @Override
@@ -54,12 +58,20 @@ public class ForecastListAdapter extends BaseAdapter {
         }else {
             viewHolder= (ViewHolder) convertView.getTag();
         }
-        DailyForecast forecast = list.get(position);
-        viewHolder.tv_date.setText(forecast.getDate());
-        viewHolder.tv_dsr.setText(forecast.getWeatherCondition().getDayTimeDescription());
-        viewHolder.tv_maxTemp.setText(forecast.getTmp().getMax());
-        viewHolder.tv_minTemp.setText(forecast.getTmp().getMin());
+        if(position>0){
+            DailyForecast forecast = list.get(position-1);
+            viewHolder.tv_date.setText(forecast.getDate());
+            viewHolder.tv_dsr.setText(forecast.getWeatherCondition().getDayTimeDescription());
+            viewHolder.tv_maxTemp.setText(forecast.getTmp().getMax()+"℃");
+            viewHolder.tv_minTemp.setText(forecast.getTmp().getMin()+"℃");
+        }else {
+            viewHolder.tv_date.setText("日期");
+            viewHolder.tv_dsr.setText("天气");
+            viewHolder.tv_maxTemp.setText("最高气温");
+            viewHolder.tv_minTemp.setText("最低气温");
+        }
         return convertView;
+
     }
 
     private class ViewHolder{

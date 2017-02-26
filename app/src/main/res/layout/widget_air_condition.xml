@@ -5,8 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="@dimen/padding_medium"
-    android:background="@color/colorBlackShade"
-    android:orientation="vertical">
+    android:background="@drawable/shape_round_corner_back_ground"
+    android:orientation="vertical"
+    android:layout_marginBottom="@dimen/margin_medium">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -32,7 +33,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorWhite"
-                android:text="63"
+                android:text="无数据"
                 android:textSize="@dimen/text_size_big"
             />
 
@@ -57,7 +58,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorWhite"
-                android:text="28"
+                android:text="无数据"
                 android:textSize="@dimen/text_size_big"
             />
 

@@ -73,7 +73,6 @@ public class RegionListFragment extends BaseFragment {
         mAdapter=new RegionListAdapter(getContext(),mList);
         mListView.setAdapter(mAdapter);
         updateProvincesList();
-
     }
 
     @Override
@@ -139,7 +138,7 @@ public class RegionListFragment extends BaseFragment {
         NetUtils.requestCities(province, new AsyncHttpResponseHandler() {
             @Override
             public void onStart() {
-                mList.clear();
+                mListView.setEnabled(false);
                 super.onStart();
             }
 
@@ -148,6 +147,7 @@ public class RegionListFragment extends BaseFragment {
                 try {
                     JSONArray jsonArray=new JSONArray(new String(responseBody));
                     int len=jsonArray.length();
+                    mList.clear();
                     for(int i=0;i<len;i++){
                         JSONObject temp = jsonArray.getJSONObject(i);
                         if(temp!=null){
@@ -159,6 +159,10 @@ public class RegionListFragment extends BaseFragment {
                             city.save();
                         }
                     }
+                    mAdapter.notifyDataSetChanged();
+                    mListView.setSelection(0);
+                    tv_title.setText(province.getProvinceName());
+                    currentLevel= CITY_LEVEL;
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -171,11 +175,8 @@ public class RegionListFragment extends BaseFragment {
 
             @Override
             public void onFinish() {
-                mAdapter.notifyDataSetChanged();
-                mListView.setSelection(0);
+                mListView.setEnabled(true);
                 loadingIcon.setVisibility(View.GONE);
-                tv_title.setText(province.getProvinceName());
-                currentLevel= CITY_LEVEL;
                 super.onFinish();
             }
         });
@@ -200,7 +201,7 @@ public class RegionListFragment extends BaseFragment {
         NetUtils.requestProvinces(new AsyncHttpResponseHandler() {
             @Override
             public void onStart() {
-                mList.clear();
+                mListView.setEnabled(false);
                 super.onStart();
             }
 
@@ -209,6 +210,7 @@ public class RegionListFragment extends BaseFragment {
                 try {
                     JSONArray jsonArray=new JSONArray(new String(responseBody));
                     int len=jsonArray.length();
+                    mList.clear();
                     for(int i=0;i<len;i++){
                         JSONObject temp = jsonArray.getJSONObject(i);
                         if(temp!=null){
@@ -217,6 +219,10 @@ public class RegionListFragment extends BaseFragment {
                             province.save();
                         }
                     }
+                    mAdapter.notifyDataSetChanged();
+                    mListView.setSelection(0);
+                    tv_title.setText("中国");
+                    currentLevel=PROVINCE_LEVEL;
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -229,11 +235,8 @@ public class RegionListFragment extends BaseFragment {
 
             @Override
             public void onFinish() {
-                mAdapter.notifyDataSetChanged();
-                mListView.setSelection(0);
+                mListView.setEnabled(true);
                 loadingIcon.setVisibility(View.GONE);
-                tv_title.setText("中国");
-                currentLevel=PROVINCE_LEVEL;
                 super.onFinish();
             }
         });
@@ -256,7 +259,7 @@ public class RegionListFragment extends BaseFragment {
         NetUtils.requestCountries(city, new AsyncHttpResponseHandler() {
             @Override
             public void onStart() {
-                mList.clear();
+                mListView.setEnabled(false);
                 super.onStart();
             }
 
@@ -265,6 +268,7 @@ public class RegionListFragment extends BaseFragment {
                 try {
                     JSONArray jsonArray=new JSONArray(new String(responseBody));
                     int len=jsonArray.length();
+                    mList.clear();
                     for(int i=0;i<len;i++){
                         JSONObject temp = jsonArray.getJSONObject(i);
                         if(temp!=null){
@@ -279,6 +283,10 @@ public class RegionListFragment extends BaseFragment {
                             country.save();
                         }
                     }
+                    mAdapter.notifyDataSetChanged();
+                    mListView.setSelection(0);
+                    tv_title.setText(city.getCityName());
+                    currentLevel= COUNTRY_LEVEL;
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -291,11 +299,8 @@ public class RegionListFragment extends BaseFragment {
 
             @Override
             public void onFinish() {
-                mAdapter.notifyDataSetChanged();
-                mListView.setSelection(0);
+                mListView.setEnabled(true);
                 loadingIcon.setVisibility(View.GONE);
-                tv_title.setText(city.getCityName());
-                currentLevel= COUNTRY_LEVEL;
                 super.onFinish();
             }
         });
