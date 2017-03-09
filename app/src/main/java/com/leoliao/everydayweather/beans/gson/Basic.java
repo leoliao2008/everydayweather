@@ -36,6 +36,14 @@ public class Basic {
         String localTime;
         @SerializedName("utc")
         String utcTime;
+
+        public String getLocalTime() {
+            return localTime;
+        }
+
+        public String getUtcTime() {
+            return utcTime;
+        }
     }
 
     public String getCity() {

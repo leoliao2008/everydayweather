@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -24,10 +25,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.baidu.location.BDLocation;
-import com.baidu.location.BDLocationListener;
-import com.baidu.location.LocationClient;
-import com.baidu.location.LocationClientOption;
 import com.google.gson.Gson;
 import com.leoliao.everydayweather.R;
 import com.leoliao.everydayweather.adapters.ForecastListAdapter;
@@ -45,10 +42,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.litepal.crud.DataSupport;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.util.TextUtils;
 
 /**
  * 创建者     $Author$
@@ -79,9 +80,12 @@ public class MainActivity extends BaseActivity {
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private NestedScrollView mNestedScrollView;
     private Country currentRegion;
-    private LocationClient mLocationClient;
     private String mWeatherId;
     private SharedPreferences mSharedPreferences;
+    private AppBarLayout mAppBarLayout;
+    private String string_expandedTitle;
+    private String string_collapsedTitle;
+    private SharedPreferences mWeatherCache;
 
     @Override
     protected int setLayoutId() {
@@ -103,6 +107,7 @@ public class MainActivity extends BaseActivity {
         lstv_suggestions= (StiffenListView) findViewById(R.id.main_lsv_suggestions);
         mSwipeRefreshLayout= (SwipeRefreshLayout) findViewById(R.id.main_swipe_refresh_layout);
         mNestedScrollView= (NestedScrollView) findViewById(R.id.main_nested_scroll_view);
+        mAppBarLayout= (AppBarLayout) findViewById(R.id.main_app_bar_layout);
     }
 
     @Override
@@ -110,7 +115,7 @@ public class MainActivity extends BaseActivity {
         mToolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(mToolbar);
         mSupportActionBar = getSupportActionBar();
-        mCollapsingToolbarLayout.setTitle("天天天气");
+        mCollapsingToolbarLayout.setTitle(getString(R.string.app_name));
         if(mSupportActionBar != null){
             mSupportActionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_TITLE|ActionBar.DISPLAY_HOME_AS_UP);
             mSupportActionBar.setHomeAsUpIndicator(R.drawable.selector_btn_pinpoint);
@@ -137,6 +142,7 @@ public class MainActivity extends BaseActivity {
         List<Country> countries = DataSupport.where("weatherId=?", mWeatherId).find(Country.class);
         if(countries.size()>0){
             currentRegion=countries.get(0);
+            showLog("request weather:"+currentRegion.getCityName());
             updateWeather(currentRegion);
         }
         //        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
@@ -152,13 +158,33 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onRefresh() {
                 if(currentRegion!=null){
-                    updateWeather(currentRegion);
+//                    updateWeather(currentRegion);
+                    requestWeatherByNet(currentRegion);
                 }else {
                     ToastUtil.showToast("请先设置当前城市。");
                     mSwipeRefreshLayout.setRefreshing(false);
                 }
             }
         });
+
+        mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                if(verticalOffset==0){
+                    if(!TextUtils.isEmpty(string_collapsedTitle)){
+                        mCollapsingToolbarLayout.setTitleEnabled(true);
+                        mCollapsingToolbarLayout.setTitle(string_collapsedTitle);
+                    }
+                }else if(Math.abs(verticalOffset)==mAppBarLayout.getTotalScrollRange()){
+                    if(!TextUtils.isEmpty(string_expandedTitle)){
+                        mCollapsingToolbarLayout.setTitleEnabled(true);
+                        mCollapsingToolbarLayout.setTitle(string_expandedTitle);
+                    }
+                }
+            }
+        });
+
+
 
     }
 
@@ -193,6 +219,47 @@ public class MainActivity extends BaseActivity {
     public void updateWeather(final Country country){
         currentRegion=country;
         mSharedPreferences.edit().putString("weather_id",country.getWeatherId()).apply();
+        mWeatherCache = getSharedPreferences("WeatherDataCache", MODE_PRIVATE);
+        String dataCacheString = mWeatherCache.getString(country.getWeatherId(), null);
+        if(!TextUtils.isEmpty(dataCacheString)){
+            showLog(dataCacheString);
+            showLog("weather data cache found...");
+            try {
+                String string = new JSONObject(dataCacheString).getJSONArray("HeWeather").getJSONObject(0).toString();
+                Weather weather = new Gson().fromJson(string, Weather.class);
+                if(weather!=null){
+                    String localTime = weather.getBasic().getUpdateTime().getLocalTime();
+//                    2017-03-05 23:49
+                    SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd hh:mm");
+                    Date date = sdf.parse(localTime);
+                    Date currentDate=new Date();
+                    if(currentDate.getTime()-date.getTime()<1000*60*60*8){
+                        showLog("use cache");
+                         updateUi(weather);
+                    }else {
+                        showLog("cache out date,use net");
+                        requestWeatherByNet(country);
+                    }
+                }else {
+                    showLog("weather is null");
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                showLog("JSONException");
+                requestWeatherByNet(country);
+            } catch (ParseException e) {
+                e.printStackTrace();
+                showLog("ParseException");
+                requestWeatherByNet(country);
+
+            }
+        }else {
+            requestWeatherByNet(country);
+        }
+
+    }
+
+    private void requestWeatherByNet(Country country) {
         NetUtils.requestWeather(country, new AsyncHttpResponseHandler() {
             @Override
             public void onStart() {
@@ -209,31 +276,11 @@ public class MainActivity extends BaseActivity {
                     String s = new JSONObject(new String(responseBody)).getJSONArray("HeWeather").getJSONObject(0).toString();
                     Weather weather = new Gson().fromJson(s, Weather.class);
                     if(weather!=null){
-                        List<DailyForecast> dailyForecasts = weather.getDailyForecasts();
-                        if(dailyForecasts!=null){
-                            mDailyForecasts.clear();
-                            mDailyForecasts.addAll(dailyForecasts);
-                            mForecastListAdapter.notifyDataSetChanged();
-                        }
-                        tv_currentTemp.setText(weather.getCurrentStatus().getTmp()+"℃");
-                        tv_currentWeatherDsr.setText(weather.getCurrentStatus().getCond().getDescription());
-                        mCollapsingToolbarLayout.setTitle(weather.getBasic().getCity());
-                        if(weather.getAqi()!=null){
-                            tv_aqi.setText(weather.getAqi().getCity().getAqi());
-                            tv_pm25.setText(weather.getAqi().getCity().getPm25());
-                        }else {
-                            tv_aqi.setText("无数据");
-                            tv_pm25.setText("无数据");
-                        }
-                        List<String> sl = weather.getSuggestions().getSuggestionList();
-                        if(suggestionList!=null){
-                            suggestionList.clear();
-                            suggestionList.addAll(sl);
-                            mSuggestionsAdapter.notifyDataSetChanged();
-                        }
+                        updateUi(weather);
+                        mWeatherCache.edit().putString(weather.getBasic().getWeatherId(),s).apply();
+                    }else {
+                        ToastUtil.showToast("更新天气失败。");
                     }
-                    ToastUtil.showToast("更新天气成功。");
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -253,74 +300,105 @@ public class MainActivity extends BaseActivity {
                 super.onFinish();
             }
         });
+
     }
 
-    private void getBDLocation(){
-        mLocationClient = new LocationClient(getApplicationContext());
-        initLocation();
-        mLocationClient.registerLocationListener(new BDLocationListener() {
+    private void updateUi(Weather weather) {
+        List<DailyForecast> dailyForecasts = weather.getDailyForecasts();
+        if(dailyForecasts!=null){
+            mDailyForecasts.clear();
+            mDailyForecasts.addAll(dailyForecasts);
+            mForecastListAdapter.notifyDataSetChanged();
+        }
+        tv_currentTemp.setText(weather.getCurrentStatus().getTmp()+"℃");
+        tv_currentWeatherDsr.setText(weather.getCurrentStatus().getCond().getDescription());
+        string_collapsedTitle=weather.getBasic().getCity();
+        string_expandedTitle=weather.getBasic().getCity()+" "+weather.getCurrentStatus().getTmp()+"℃";
+        if(weather.getAqi()!=null){
+            tv_aqi.setText(weather.getAqi().getCity().getAqi());
+            tv_pm25.setText(weather.getAqi().getCity().getPm25());
+        }else {
+            tv_aqi.setText("无数据");
+            tv_pm25.setText("无数据");
+        }
+        List<String> sl = weather.getSuggestions().getSuggestionList();
+        if(suggestionList!=null){
+            suggestionList.clear();
+            suggestionList.addAll(sl);
+            mSuggestionsAdapter.notifyDataSetChanged();
+        }
+        ToastUtil.showToast("更新天气成功。");
 
-            @Override
-            public void onReceiveLocation(BDLocation bdLocation) {
-                mLocationClient.unRegisterLocationListener(this);
-                mLocationClient.stop();
-                if(bdLocation!=null){
-                    bdLocation.getCity();
-                    bdLocation.getCityCode();
-                    showLog("city:"+bdLocation.getCity());
-                    showLog("city code"+bdLocation.getCityCode());
-                    showLog("district:"+bdLocation.getDistrict());
-                    showLog("country:"+bdLocation.getCountry());
-                }
-            }
-
-            @Override
-            public void onConnectHotSpotMessage(String s, int i) {
-
-            }
-
-        });
-        mLocationClient.start();
     }
 
-    private void initLocation(){
-        LocationClientOption option = new LocationClientOption();
-        option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
-        //可选，默认高精度，设置定位模式，高精度，低功耗，仅设备
+    //    private void getBDLocation(){
+//        mLocationClient = new LocationClient(getApplicationContext());
+//        initLocation();
+//        mLocationClient.registerLocationListener(new BDLocationListener() {
+//
+//            @Override
+//            public void onReceiveLocation(BDLocation bdLocation) {
+//                mLocationClient.unRegisterLocationListener(this);
+//                mLocationClient.stop();
+//                if(bdLocation!=null){
+//                    bdLocation.getCity();
+//                    bdLocation.getCityCode();
+//                    showLog("city:"+bdLocation.getCity());
+//                    showLog("city code"+bdLocation.getCityCode());
+//                    showLog("district:"+bdLocation.getDistrict());
+//                    showLog("country:"+bdLocation.getCountry());
+//                }
+//            }
+//
+//            @Override
+//            public void onConnectHotSpotMessage(String s, int i) {
+//
+//            }
+//
+//        });
+//        mLocationClient.start();
+//    }
 
-        option.setCoorType("bd09ll");
-        //可选，默认gcj02，设置返回的定位结果坐标系
+//    private void initLocation(){
+//        LocationClientOption option = new LocationClientOption();
+//        option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
+//        //可选，默认高精度，设置定位模式，高精度，低功耗，仅设备
+//
+//        option.setCoorType("bd09ll");
+//        //可选，默认gcj02，设置返回的定位结果坐标系
+//
+//        int span=1000;
+//        option.setScanSpan(span);
+//        //可选，默认0，即仅定位一次，设置发起定位请求的间隔需要大于等于1000ms才是有效的
+//
+//        option.setIsNeedAddress(true);
+//        //可选，设置是否需要地址信息，默认不需要
+//
+//        option.setOpenGps(true);
+//        //可选，默认false,设置是否使用gps
+//
+//        option.setLocationNotify(true);
+//        //可选，默认false，设置是否当GPS有效时按照1S/1次频率输出GPS结果
+//
+//        option.setIsNeedLocationDescribe(true);
+//        //可选，默认false，设置是否需要位置语义化结果，可以在BDLocation.getLocationDescribe里得到，结果类似于“在北京天安门附近”
+//
+//        option.setIsNeedLocationPoiList(true);
+//        //可选，默认false，设置是否需要POI结果，可以在BDLocation.getPoiList里得到
+//
+//        option.setIgnoreKillProcess(false);
+//        //可选，默认true，定位SDK内部是一个SERVICE，并放到了独立进程，设置是否在stop的时候杀死这个进程，默认不杀死
+//
+//        option.SetIgnoreCacheException(false);
+//        //可选，默认false，设置是否收集CRASH信息，默认收集
+//
+//        option.setEnableSimulateGps(false);
+//        //可选，默认false，设置是否需要过滤GPS仿真结果，默认需要
+//
+//        mLocationClient.setLocOption(option);
+//    }
 
-        int span=1000;
-        option.setScanSpan(span);
-        //可选，默认0，即仅定位一次，设置发起定位请求的间隔需要大于等于1000ms才是有效的
 
-        option.setIsNeedAddress(true);
-        //可选，设置是否需要地址信息，默认不需要
-
-        option.setOpenGps(true);
-        //可选，默认false,设置是否使用gps
-
-        option.setLocationNotify(true);
-        //可选，默认false，设置是否当GPS有效时按照1S/1次频率输出GPS结果
-
-        option.setIsNeedLocationDescribe(true);
-        //可选，默认false，设置是否需要位置语义化结果，可以在BDLocation.getLocationDescribe里得到，结果类似于“在北京天安门附近”
-
-        option.setIsNeedLocationPoiList(true);
-        //可选，默认false，设置是否需要POI结果，可以在BDLocation.getPoiList里得到
-
-        option.setIgnoreKillProcess(false);
-        //可选，默认true，定位SDK内部是一个SERVICE，并放到了独立进程，设置是否在stop的时候杀死这个进程，默认不杀死
-
-        option.SetIgnoreCacheException(false);
-        //可选，默认false，设置是否收集CRASH信息，默认收集
-
-        option.setEnableSimulateGps(false);
-        //可选，默认false，设置是否需要过滤GPS仿真结果，默认需要
-
-        mLocationClient.setLocOption(option);
-    }
 
     private ArrayList<String>permissionList=new ArrayList<>();
 

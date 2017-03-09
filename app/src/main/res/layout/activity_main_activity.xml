@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <android.support.design.widget.AppBarLayout
+            android:id="@+id/main_app_bar_layout"
             android:fitsSystemWindows="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -22,9 +23,10 @@
                 android:fitsSystemWindows="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:statusBarScrim="@color/colorBackGround"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
                 app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-                app:contentScrim="@color/colorPrimary">
+                app:contentScrim="@color/color_tool_bar_content_scrim">
 
                 <ImageView
                     android:id="@+id/main_iv_wall_paper"
@@ -48,8 +50,7 @@
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/text_size_front_page_temperature"
                         android:textColor="@color/colorWhite"
-                        android:text="无数据"
-                    />
+                        android:text="无数据"/>
                     <TextView
                         android:id="@+id/main_tv_current_weather_description"
                         android:layout_gravity="end"
@@ -59,6 +60,7 @@
                         android:textColor="@color/colorWhite"
                         android:text="无数据"
                     />
+
 
                 </LinearLayout>
 
@@ -72,6 +74,12 @@
                     app:layout_collapseMode="pin"
                     app:titleTextColor="@color/colorWhite"
                 />
+                <View
+                    android:fitsSystemWindows="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/status_bar_height"
+                    android:background="@drawable/shape_status_bar_gradiant"
+                    app:layout_collapseMode="parallax"/>
             </android.support.design.widget.CollapsingToolbarLayout>
         </android.support.design.widget.AppBarLayout>
 
